@@ -3,6 +3,7 @@
 A full-stack web application designed to help students efficiently report, search, and claim lost or found items within a college campus. The platform includes authentication, admin workflows, image uploads, smart matching, and real-time push notifications.
 
 🚀 Features
+
 👤 Student Features
       Student registration and login
       Report lost and found items with image uploads
@@ -29,6 +30,7 @@ A full-stack web application designed to help students efficiently report, searc
 Matching found items based on category and location
 
 🧰 Tech Stack
+
 Frontend
   EJS (Embedded JavaScript Templates)
   HTML5, CSS3
@@ -53,6 +55,7 @@ Notifications
    VAPID keys
 
 📂 Project Structure
+
 campus-lost-and-found/
 │
 ├── models/          # Mongoose schemas (User, Item, Claim, Subscription)
@@ -64,14 +67,15 @@ campus-lost-and-found/
 └── README.md        # Project documentation
 
 ⚙️ How to Run Locally
+
   1️⃣ Clone the repository
       git clone https://github.com/<your-username>/lost_and_found.git
       cd lost_and_found
 
-2️⃣ Install dependencies
+  2️⃣ Install dependencies
     npm install
 
-3️⃣ Create .env file
+  3️⃣ Create .env file
     Create a .env file in the root directory and add:
 
 PORT=4444
