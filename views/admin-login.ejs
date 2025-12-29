@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a href="/" class="brand">
+          <div class="brand-logo">◎</div>
+          <div class="brand-text">Campus Lost &amp; Found</div>
+        </a>
+        <nav class="nav-links">
+          <a href="/items">Browse items</a>
+          <a href="/lost/new">Report lost</a>
+          <a href="/found/new">Report found</a>
+          <% if (currentUser) { %>
+            <a href="/my/claims">My claims</a>
+            <form action="/auth/logout" method="POST" class="nav-form">
+              <button type="submit" class="nav-btn">Logout</button>
+            </form>
+          <% } else { %>
+            <a href="/auth/login">Login</a>
+            <a href="/auth/register">Sign up</a>
+          <% } %>
+          <a href="/admin/login" class="nav-admin">Admin</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="card list-card">
+        <h1>Admin access</h1>
+        <p class="hero-subtitle">
+          Sign in to review claims and manage item status.
+        </p>
+
+        <% if (error) { %>
+          <p class="meta" style="color:#f97373; margin-bottom:8px;"><%= error %></p>
+        <% } %>
+
+        <form action="/admin/login" method="POST" class="form">
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Admin username" required>
+          </div>
+
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Admin password" required>
+          </div>
+
+          <button type="submit" class="btn primary full">Login</button>
+          <a href="/" class="back-link">← Back to home</a>
+        </form>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <span>© <%= new Date().getFullYear() %> Campus Lost &amp; Found.</span>
+        <div class="footer-links">
+          <a href="/">Home</a>
+          <a href="/items">Browse</a>
+          <a href="/auth/login">Student access</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <script>
+    window.VAPID_PUBLIC_KEY = "<%= typeof VAPID_PUBLIC_KEY !== 'undefined' ? VAPID_PUBLIC_KEY : '' %>";
+    window.CURRENT_USER_LOGGED_IN = <%= typeof USER_LOGGED_IN !== 'undefined' && USER_LOGGED_IN ? 1 : 0 %>;
+  </script>
+  <script src="/js/push.js"></script>
+  </body>
+  </html>
+  

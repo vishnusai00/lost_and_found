@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin • Claims</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a href="/" class="brand">
+          <div class="brand-logo">◎</div>
+          <div class="brand-text">Campus Lost &amp; Found</div>
+        </a>
+        <nav class="nav-links">
+          <a href="/items">Browse items</a>
+          <a href="/lost/new">Report lost</a>
+          <a href="/found/new">Report found</a>
+          <% if (currentUser) { %>
+            <a href="/my/claims">My claims</a>
+            <form action="/auth/logout" method="POST" class="nav-form">
+              <button type="submit" class="nav-btn">Logout</button>
+            </form>
+          <% } else { %>
+            <a href="/auth/login">Login</a>
+            <a href="/auth/register">Sign up</a>
+          <% } %>
+          <a href="/admin/login" class="nav-admin">Admin</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="card list-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;">
+          <div>
+            <h1>Admin • item claims</h1>
+            <p class="hero-subtitle">
+              Review claims, approve the right owner, and mark items as resolved.
+            </p>
+          </div>
+          <form action="/admin/logout" method="POST" class="nav-form">
+            <button type="submit" class="nav-btn">Logout</button>
+          </form>
+        </div>
+
+        <% if (claims.length === 0) { %>
+          <p>No claims submitted yet.</p>
+        <% } else { %>
+          <ul class="claim-list">
+            <% claims.forEach(claim => { %>
+              <li class="claim-item">
+                <div class="claim-header">
+                  <span class="badge <%= claim.status === 'pending' ? 'lost' : (claim.status === 'approved' ? 'found' : '') %>">
+                    <%= claim.status.charAt(0).toUpperCase() + claim.status.slice(1) %>
+                  </span>
+                  <h3>
+                    <%= claim.item ? claim.item.title : "Item removed" %>
+                    <% if (claim.item) { %>
+                      (<%= claim.item.type === "lost" ? "Lost" : "Found" %>)
+                    <% } %>
+                  </h3>
+                </div>
+
+                <% if (claim.item) { %>
+                  <p class="meta">Location: <strong><%= claim.item.location %></strong></p>
+                  <p class="meta">
+                    Item status:
+                    <strong><%= claim.item.status === "resolved" ? "Resolved / returned" : "Open" %></strong>
+                  </p>
+                <% } %>
+
+                <p class="meta">Claimed by: <strong><%= claim.name %></strong></p>
+                <p class="meta">Contact: <strong><%= claim.contact %></strong></p>
+                <p class="meta">Message:</p>
+                <p class="desc"><%= claim.message %></p>
+
+                <p class="meta">Submitted at: <strong><%= claim.createdAt.toLocaleString() %></strong></p>
+
+                <% if (claim.status === "pending") { %>
+                  <div class="admin-claim-actions">
+                    <form action="/admin/claims/<%= claim._id %>/approve" method="POST">
+                      <button type="submit" class="btn primary">Approve</button>
+                    </form>
+                    <form action="/admin/claims/<%= claim._id %>/reject" method="POST">
+                      <button type="submit" class="btn secondary">Reject</button>
+                    </form>
+                  </div>
+                <% } %>
+              </li>
+            <% }); %>
+          </ul>
+        <% } %>
+
+        <div class="list-actions">
+          <a href="/items" class="btn secondary">Back to all items</a>
+          <a href="/" class="link back-link">← Back to home</a>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <span>© <%= new Date().getFullYear() %> Campus Lost &amp; Found.</span>
+        <div class="footer-links">
+          <a href="/">Home</a>
+          <a href="/items">Browse</a>
+          <a href="/auth/login">Student access</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <script>
+    window.VAPID_PUBLIC_KEY = "<%= typeof VAPID_PUBLIC_KEY !== 'undefined' ? VAPID_PUBLIC_KEY : '' %>";
+    window.CURRENT_USER_LOGGED_IN = <%= typeof USER_LOGGED_IN !== 'undefined' && USER_LOGGED_IN ? 1 : 0 %>;
+  </script>
+  <script src="/js/push.js"></script>
+  </body>
+  </html>
+  
