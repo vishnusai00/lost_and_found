@@ -90,8 +90,8 @@ VAPID_PUBLIC_KEY=your_vapid_public_key
 VAPID_PRIVATE_KEY=your_vapid_private_key
 VAPID_EMAIL=mailto:youremail@example.com
 
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD=admin123
+ADMIN_USERNAME=your_admin_username
+ADMIN_PASSWORD=your_admin_password
 
 4️⃣ Run the application
     node app.js
